@@ -8,9 +8,46 @@ using System;
 using System.Collections.Generic;
 using Lq.Service.Models.Attribute;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Owin;
 
 namespace Lq.Service.Models
 {
+
+    public class UserManager : UserManager<User, int>
+    {
+        public UserManager(IUserStore<User, int> store)
+            : base(store)
+        {
+        }
+
+        public static UserManager Create(IdentityFactoryOptions<UserManager> options, IOwinContext context)
+        {
+            var manager = new UserManager(new UserStore(context.Get<AppDbContext>()));
+            manager.UserValidator = new UserValidator<User, int>(manager)
+            {
+                AllowOnlyAlphanumericUserNames = false,
+                RequireUniqueEmail = true
+            };
+            manager.PasswordValidator = new PasswordValidator
+            {
+                RequiredLength = 6,
+                RequireNonLetterOrDigit = true,
+                RequireDigit = true,
+                RequireLowercase = true,
+                RequireUppercase = true,
+            };
+            var dataProtectionProvider = options.DataProtectionProvider;
+            if (dataProtectionProvider != null)
+            {
+                manager.UserTokenProvider = new DataProtectorTokenProvider<User, int>(dataProtectionProvider.Create("ASP.NET Identity"));
+            }
+            return manager;
+        }
+    }
+
+    /// <summary>
+    /// undependent model
+    /// </summary>
     public class User : IdentityUser<int, UserLogin, UserRole, UserClaim>, IEntity
     {
         [ColumnComment("创建日期")]
@@ -28,10 +65,27 @@ namespace Lq.Service.Models
 
         public virtual ICollection<UserPermission> Permissions { get; set; }
     }
+
+    /// <summary>
+    /// user-role many-to-many
+    /// </summary>
     public class UserRole : IdentityUserRole<int> { }
+
+    /// <summary>
+    /// user-claim one-to-many
+    /// </summary>
     public class UserClaim : IdentityUserClaim<int> { }
+
+
+    /// <summary>
+    /// user-login one-to-many
+    /// </summary>
     public class UserLogin : IdentityUserLogin<int> { }
 
+
+    /// <summary>
+    /// undependent model
+    /// </summary>
     public class Role : IdentityRole<int, UserRole>, IEntity
     {
         public Role() { }
@@ -54,7 +108,7 @@ namespace Lq.Service.Models
 
     public class UserStore : UserStore<User, Role, int, UserLogin, UserRole, UserClaim>
     {
-        public UserStore(ApplicationDbContext context)
+        public UserStore(AppDbContext context)
             : base(context)
         {
         }
@@ -62,7 +116,7 @@ namespace Lq.Service.Models
 
     public class RoleStore : RoleStore<Role, int, UserRole>
     {
-        public RoleStore(ApplicationDbContext context)
+        public RoleStore(AppDbContext context)
             : base(context)
         {
         }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Data.Entity;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Data.Entity.Infrastructure;
 using Lq.Service.Models.Entity;
@@ -19,7 +17,7 @@ namespace Lq.Service.Controllers
     [Authorize]
     public class GenericController<T> : ApiController where T:BaseEntity
     {
-        private readonly ApplicationDbContext db = ApplicationDbContext.Create();
+        private readonly Models.AppDbContext db = Models.AppDbContext.Create();
 
         private DbSet<T> dbSet;
         private DbSet<T> DbSet

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
-using Newtonsoft.Json.Serialization;
 using System.Web.Http.Dispatcher;
 using Lq.Service.Models.Query;
 using Lq.Service.Extensions;
@@ -13,8 +8,9 @@ namespace Lq.Service
 {
     public static class WebApiConfig
     {
-        public static void Register(HttpConfiguration config)
+        public static HttpConfiguration ConfigWebApi()
         {
+            HttpConfiguration config = new HttpConfiguration();
             //泛型控制器选择器
             GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new ControllerSelector(GlobalConfiguration.Configuration));
 
@@ -54,6 +50,8 @@ namespace Lq.Service
                 routeTemplate: "genapi/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            return config;
         }
     }
 }

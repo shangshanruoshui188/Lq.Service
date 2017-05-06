@@ -6,8 +6,7 @@ namespace Lq.Service.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-
-    internal sealed class Configuration : DbMigrationsConfiguration<Lq.Service.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Lq.Service.Models.AppDbContext>
     {
         public Configuration()
         {
@@ -16,7 +15,7 @@ namespace Lq.Service.Migrations
             SetSqlGenerator("MySql.Data.MySqlClient", new MySqlMigrationSqlGenerator());
         }
 
-        protected override void Seed(Lq.Service.Models.ApplicationDbContext context)
+        protected override void Seed(Lq.Service.Models.AppDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

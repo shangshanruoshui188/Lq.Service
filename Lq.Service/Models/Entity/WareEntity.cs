@@ -1,9 +1,5 @@
 ﻿using Lq.Service.Models.Attribute;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Lq.Service.Models.Entity
 {

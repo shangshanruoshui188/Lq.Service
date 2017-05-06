@@ -78,13 +78,15 @@
         };
 
         $.ajax({
-            type: 'post',
-            url: 'api/Account/logout',
+            type: 'get',
+            url: 'api/Account/UserInfo',
             headers: headers,
             data:data
         }).done(function (data) {
-            alert(JSON.stringify(data));;
-        }).fail(showError);
+                alert(JSON.stringify(data));;
+            }).fail(function (data) {
+                alert(JSON.stringify(data));
+            });
     }
 
 </script>

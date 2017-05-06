@@ -1,26 +1,23 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Web;
 
 namespace Lq.Service.Models
 {
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
-    public class ApplicationDbContext : IdentityDbContext<User, Role,
+    public class AppDbContext : IdentityDbContext<User, Role,
     int, UserLogin, UserRole, UserClaim>
     {
-        public ApplicationDbContext()
+        public AppDbContext()
             : base("Mysql")
         {
         }
 
-        public ApplicationDbContext(string connectionString)
+        public AppDbContext(string connectionString)
             : base(connectionString)
         {
         }
@@ -70,9 +67,9 @@ namespace Lq.Service.Models
         public DbSet<Region> Regions { get; set; }
 
 
-        public static ApplicationDbContext Create()
+        public static AppDbContext Create()
         {
-            return new ApplicationDbContext();
+            return new AppDbContext();
         }
     }
 }
