@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Data.Entity.Infrastructure;
 using Lq.Service.Models.Entity;
-using Lq.Service.Models;
 using Lq.Service.Models.Query;
 
 namespace Lq.Service.Controllers

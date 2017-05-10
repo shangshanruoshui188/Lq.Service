@@ -1,5 +1,6 @@
 ﻿using Lq.Service.Models.Attribute;
 using Lq.Service.Models.Entity;
+using Lq.Service.Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,54 +30,6 @@ namespace Lq.Service.Models
         [ColumnComment("用户性别")]
         public string Sex { get; set; }
 
-
-        [ColumnComment("用户年龄")]
-        public int Age { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户昵称")]
-        public string NickName { get; set; }
-
-
-        [MaxLength(255)]
-        [ColumnComment("用户登录密码")]
-        public string Password { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户所在省份")]
-        public string Province { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户所在城市")]
-        public string City { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户所在县区")]
-        public string County { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户详细地址")]
-        public string Address { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户职业")]
-        public string Occupation { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户邮编")]
-        public string PostCode { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户设置安全问题")]
-        public string SecurityQuestion { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户所设置安全问题的答案")]
-        public string Answer { get; set; }
-
-        [MaxLength(255)]
-        [ColumnComment("用户固定电话")]
-        public string FixedTel { get; set; }
 
         [MaxLength(255)]
         [ColumnComment("订阅日期")]

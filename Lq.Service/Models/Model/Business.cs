@@ -1,4 +1,5 @@
 ﻿using Lq.Service.Models.Attribute;
+using Lq.Service.Models.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lq.Service.Models

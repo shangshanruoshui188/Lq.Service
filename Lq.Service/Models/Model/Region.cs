@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Lq.Service.Models.Attribute;
+using Lq.Service.Models.Identity;
 
 namespace Lq.Service.Models
 {

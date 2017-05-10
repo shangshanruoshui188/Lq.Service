@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using Lq.Service.Models;
+using Autofac.Integration.Owin;
+using Autofac;
+using Lq.Service.Models.Identity;
 
 namespace Lq.Service.Providers
 {
@@ -14,20 +15,16 @@ namespace Lq.Service.Providers
     {
         private readonly string _publicClientId;
 
-        public ApplicationOAuthProvider(string publicClientId)
+        public ApplicationOAuthProvider()
         {
-            if (publicClientId == null)
-            {
-                throw new ArgumentNullException("publicClientId");
-            }
-
-            _publicClientId = publicClientId;
+            _publicClientId = AuthConfig.PublicClientId;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var userManager = context.OwinContext.GetUserManager<UserManager>();
-
+            //使用DI解析获取userManager
+            var autofacLifetimeScope = OwinContextExtensions.GetAutofacLifetimeScope(context.OwinContext);
+            var userManager= autofacLifetimeScope.Resolve<UserManager>();
             User user = await userManager.FindAsync(context.UserName, context.Password);
 
             if (user == null)

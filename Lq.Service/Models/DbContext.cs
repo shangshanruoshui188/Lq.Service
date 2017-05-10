@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Lq.Service.Models.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;

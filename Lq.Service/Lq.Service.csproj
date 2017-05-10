@@ -48,8 +48,14 @@
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac.Integration.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Owin.4.0.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="Autofac.Integration.WebApi, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.WebApi2.4.0.1\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.Owin.4.0.0\lib\net45\Autofac.Integration.WebApi.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -205,6 +211,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -260,7 +267,14 @@
     <Compile Include="Models\Entity\SpatialEntity.cs" />
     <Compile Include="Models\Entity\WareEntity.cs" />
     <Compile Include="Models\Extension\TypeAttributeExtension.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Identity\Role.cs" />
+    <Compile Include="Models\Identity\RoleStore.cs" />
+    <Compile Include="Models\Identity\User.cs" />
+    <Compile Include="Models\Identity\UserClaim.cs" />
+    <Compile Include="Models\Identity\UserLogin.cs" />
+    <Compile Include="Models\Identity\UserManager.cs" />
+    <Compile Include="Models\Identity\UserRole.cs" />
+    <Compile Include="Models\Identity\UserStore.cs" />
     <Compile Include="Models\Model\Admin.cs" />
     <Compile Include="Models\Model\Business.cs" />
     <Compile Include="Models\Model\Region.cs" />
@@ -280,6 +294,8 @@
     <Compile Include="Models\Query\TransProvider\LessDateTransformProvider.cs" />
     <Compile Include="Models\Query\TransProvider\LikeTransformProvider.cs" />
     <Compile Include="Models\Query\TransProvider\UnixTimeTransformProvider.cs" />
+    <Compile Include="Models\Store\BaseStore.cs" />
+    <Compile Include="Models\Store\IStore.cs" />
     <Compile Include="Models\Util\TypeUtil.cs" />
     <Compile Include="Models\Util\UnixTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -403,7 +419,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\WebApiTestClient.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -420,6 +438,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Manager\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

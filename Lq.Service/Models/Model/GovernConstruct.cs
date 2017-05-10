@@ -1,5 +1,6 @@
 ﻿using Lq.Service.Models.Attribute;
 using Lq.Service.Models.Entity;
+using Lq.Service.Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

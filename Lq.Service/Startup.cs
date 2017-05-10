@@ -1,9 +1,10 @@
-﻿using System;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Owin;
 using Microsoft.Owin.Security.OAuth;
-using Lq.Service.Models;
-using Lq.Service.Providers;
+using Autofac;
+using System.Web.Http;
+using Autofac.Integration.WebApi;
+using Microsoft.Owin.Security.DataProtection;
 
 [assembly: OwinStartup(typeof(Lq.Service.Startup))]
 
@@ -11,41 +12,61 @@ namespace Lq.Service
 {
     public partial class Startup
     {
+
+        /// <summary>
+        /// 用于在UserManager中加密Token，不得以的Trick，一种比较Ditry的做法，但是没有办法
+        /// 这个对象只能从IAppBuilder中获取
+        /// </summary>
+        public static IDataProtectionProvider DataProtectionProvider { get; private set; }
+
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
-            ConfigureWebApi(app);
+            var container = ConfigAutofac(app);
+            ConfigureAuth(app,container);
+            ConfigureWebApi(app,container);
         }
 
-        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
 
-        public static string PublicClientId { get; private set; }
-
-        private void ConfigureAuth(IAppBuilder app)
+        /// <summary>
+        /// 使用Autofac框架进行依赖注入
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        private IContainer ConfigAutofac(IAppBuilder app)
         {
-            
-            app.CreatePerOwinContext(AppDbContext.Create);
-            app.CreatePerOwinContext<UserManager>(UserManager.Create);
-
-            
-            PublicClientId = "self";
-            OAuthOptions = new OAuthAuthorizationServerOptions
-            {
-                TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                AllowInsecureHttp = true
-            };
-
-            app.UseOAuthBearerTokens(OAuthOptions);
-
-            
+            DataProtectionProvider = app.GetDataProtectionProvider();
+            IContainer container= AutofacConfig.ConfigAutofac();
+            app.UseAutofacMiddleware(container);
+            return container;
         }
 
-        private void ConfigureWebApi(IAppBuilder app)
+
+        /// <summary>
+        /// 配置OAuth，使用Bearer token进行鉴权
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="container"></param>
+        private void ConfigureAuth(IAppBuilder app,IContainer container)
         {
-            app.UseWebApi(WebApiConfig.ConfigWebApi());
+            /**
+             * 依赖注入，注意要提前注册ApplicationOAuthProvider类
+             **/
+            var provider = container.Resolve<IOAuthAuthorizationServerProvider>();
+            var options = AuthConfig.ConfigAuth(provider);
+            app.UseOAuthBearerTokens(options);
+        }
+
+        /// <summary>
+        /// 基于Autofac利用DI将WebApi Middleware注入到Owin
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="container"></param>
+        private void ConfigureWebApi(IAppBuilder app,IContainer container)
+        {
+            HttpConfiguration config= WebApiConfig.ConfigWebApi();
+            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+            app.UseAutofacWebApi(config);
+            app.UseWebApi(config);
         }
         
     }
