@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/jquery.cookie.js"></script>
+</head>
+<body>
+    <label>邮箱</label><input id="email" type="text" />
+    <label>用户名</label><input id="name" type="text" />
+    <label>密码</label><input id="password" type="password"  />
+    <label>确认密码</label><input id="comfirmpwd" type="password"  />
+    <input  type="button" id="register" value="注册"/>
+    <input type="button" id="login" value="登陆"/>
+    <input type="button" id="callapi" value="调用api"/>
+
+</body>
+</html>
+<script>
+    var tokenKey = 'tokenKey';
+    $(function () {
+        $('#register').click(register);
+        $('#login').click(login);
+        $('#callapi').click(callapi);
+    });
+
+    function register() {
+
+        var data = {
+            Name:'Admin',
+            Email: 'xx@13.com',
+            Password: 'Zhq12345^',
+            ConfirmPassword: 'Zhq12345^',
+            Type:'Administrator'
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: 'api/Account/Register',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (data) {
+                alert(JSON.stringify(data));
+            }).fail(function (data) {
+                alert(JSON.stringify(data));
+            });
+    }
+
+    function login() {
+        var loginData = {
+            grant_type: 'password',
+            username: 'admin',
+            password: 'Zhq12345^'
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/Token',
+            data: loginData
+        }).done(function (data) {
+            alert(JSON.stringify(data));
+            $.cookie(tokenKey, data.access_token);
+            callapi();
+        }).fail();
+    }
+
+    function callapi() {
+
+        var token = $.cookie(tokenKey);
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        var data = {
+            Code: '001',
+        };
+
+        $.ajax({
+            type: 'get',
+            url: 'api/Account/UserInfo',
+            headers: headers,
+            data:data
+        }).done(function (data) {
+                alert(JSON.stringify(data));;
+            }).fail(function (data) {
+                alert(JSON.stringify(data));
+            });
+    }
+
+</script>
